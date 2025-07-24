@@ -1,4 +1,4 @@
-import { cleanEnv, port, str, bool } from 'envalid';
+import { cleanEnv, port, str, bool, num } from 'envalid';
 
 export const ValidateEnv = () => {
   cleanEnv(process.env, {
@@ -10,7 +10,8 @@ export const ValidateEnv = () => {
     DB_HOST: str(),
     DB_PORT: port(),
     DB_DATABASE: str(),
-    SECRET_KEY: str(),
+    JWT_SECRET_KEY: str(),
+    JWT_EXPIRES_IN: num(),
     LOG_FORMAT: str(),
     LOG_DIR: str(),
     ORIGIN: str(),

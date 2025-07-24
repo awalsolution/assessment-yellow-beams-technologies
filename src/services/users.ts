@@ -38,8 +38,10 @@ export class UserService {
       const hashedPassword = await hash(userData.password, 10);
       userData = { ...userData, password: hashedPassword };
     }
+    console.log('userId', userId);
+    console.log('userData', userData);
 
-    const updateUserById: User = await UserModel.findByIdAndUpdate(userId, { userData });
+    const updateUserById: User = await UserModel.findByIdAndUpdate(userId, { ...userData });
     if (!updateUserById) throw new HttpException(409, "User doesn't exist");
 
     return updateUserById;
