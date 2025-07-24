@@ -16,10 +16,23 @@ const UserSchema: Schema = new Schema(
       type: String,
       required: [true, 'Password is required'],
       minlength: [6, 'Password must be at least 6 characters'],
+      select: false,
     },
   },
   {
     timestamps: true,
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.password;
+        return ret;
+      },
+    },
+    toObject: {
+      transform(doc, ret) {
+        delete ret.password;
+        return ret;
+      },
+    },
   },
 );
 

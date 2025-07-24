@@ -7,8 +7,8 @@ import { UserModel } from '@/src/models/user';
 
 export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const token = req.header('Authorization');
-    if (!token || !token.startsWith('Bearer ')) {
+    const bearerToken = req.header('Authorization');
+    if (!bearerToken || !bearerToken.startsWith('Bearer ')) {
       res.status(401).json({
         success: false,
         message: 'Access denied. No token provided.',
@@ -24,7 +24,8 @@ export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: 
       return;
     }
 
-    if (token) {
+    if (bearerToken) {
+      const token = bearerToken.replace('Bearer ', '').trim();
       const decoded = jwt.verify(token, SECRET_KEY) as DataStoredInToken;
       const findUser = await UserModel.findById(decoded._id);
 

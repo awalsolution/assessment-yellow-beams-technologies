@@ -1,12 +1,8 @@
 import 'reflect-metadata';
-import fs from 'node:fs';
-import path from 'node:path';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
 import { NODE_ENV, HOST, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@/src/config/env';
 import connectDB from '@/src/config/database';
 import { Routes } from '@/src/interfaces/routes';
@@ -28,7 +24,6 @@ export class App {
     this.connectToDatabase();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
-    this.initializeSwagger();
     this.initializeErrorHandling();
   }
 
@@ -37,7 +32,6 @@ export class App {
       logger.info(`=================================`);
       logger.info(`======= ENV: ${this.env} =======`);
       logger.info(`🚀 App is started at http://${this.host}:${this.port}`);
-      logger.info(`🚀 REST API docs is available at http://${this.host}:${this.port}/docs`);
     });
   }
 
@@ -63,55 +57,6 @@ export class App {
     routes.forEach(route => {
       this.app.use('/', route.router);
     });
-  }
-
-  private initializeSwagger() {
-    const options = {
-      swaggerDefinition: {
-        openapi: '3.0.0',
-        info: {
-          title: 'REST API',
-          version: '3.0.0',
-          description: 'API docs',
-        },
-        servers: [
-          {
-            url: `http://${this.host}:${this.port}`,
-            description: 'Development Server',
-          },
-        ],
-        components: {
-          securitySchemes: {
-            bearerAuth: {
-              type: 'http',
-              scheme: 'bearer',
-            },
-          },
-        },
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
-      },
-
-      apis: this.getSwaggerFilePaths(__dirname + '/docs'),
-    };
-
-    const specs = swaggerJSDoc(options);
-    this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
-  }
-
-  public getSwaggerFilePaths(directory: any) {
-    if (!fs.existsSync(directory)) {
-      logger.warn(`Swagger docs directory not found: ${directory}`);
-      return [];
-    }
-
-    const swaggerFiles = fs.readdirSync(directory).filter(file => {
-      return path.extname(file) === '.yaml';
-    });
-    return swaggerFiles.map(file => path.join(directory, file));
   }
 
   private initializeErrorHandling() {

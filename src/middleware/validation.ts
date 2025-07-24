@@ -17,6 +17,7 @@ export const ValidationMiddleware = (
         next();
       })
       .catch((errors: ValidationError[]) => {
+        console.error('Validation errors:', errors);
         const message = errors.map((error: ValidationError) => Object.values(error.constraints)).join(', ');
         next(new HttpException(400, message));
       });

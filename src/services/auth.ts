@@ -1,5 +1,5 @@
 import { hash, compare } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '@/src/config/env';
 import { HttpException } from '@/src/exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@/src/interfaces/auth';
@@ -10,7 +10,7 @@ const createToken = (user: User): TokenData => {
   const dataStoredInToken: DataStoredInToken = { _id: user._id };
   const expiresIn: number = 60 * 60;
 
-  return { expiresIn, token: sign(dataStoredInToken, SECRET_KEY, { expiresIn }) };
+  return { expiresIn, token: jwt.sign(dataStoredInToken, SECRET_KEY, { expiresIn }) };
 };
 
 export class AuthService {
@@ -21,10 +21,8 @@ export class AuthService {
 
     const hashedPassword = await hash(userData.password, 10);
     const createData = await UserModel.create({ ...userData, password: hashedPassword });
-    const userObj = createData.toObject();
-    delete userObj.password;
 
-    return userObj;
+    return createData;
   }
 
   async login(userData: User) {
