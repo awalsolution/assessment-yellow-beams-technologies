@@ -30,6 +30,6 @@ export class CampaignRoute implements Routes {
       this.campaignsController.update,
     );
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.campaignsController.delete);
-    this.router.post(`/ai-suggest `, AuthMiddleware, this.campaignsController.aiSuggest);
+    this.router.post('/ai-suggest', AuthMiddleware, this.campaignsController.aiSuggest);
   }
 }
