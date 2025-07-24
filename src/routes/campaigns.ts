@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { CampaignsController } from '@/src/controllers/campaigns';
-import { CreateUserDto } from '@/src/dtos/users';
+import { CreateCampaignDto } from '@/src/dtos/campaign';
 import { Routes } from '@/src/interfaces/routes';
 import { ValidationMiddleware } from '@/src/middleware/validation';
 import { AuthMiddleware } from '@/src/middleware/auth';
@@ -20,13 +20,13 @@ export class CampaignRoute implements Routes {
     this.router.post(
       `${this.path}`,
       AuthMiddleware,
-      ValidationMiddleware(CreateUserDto),
+      ValidationMiddleware(CreateCampaignDto),
       this.campaignsController.create,
     );
     this.router.put(
       `${this.path}/:id`,
       AuthMiddleware,
-      ValidationMiddleware(CreateUserDto, true),
+      ValidationMiddleware(CreateCampaignDto, true),
       this.campaignsController.update,
     );
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.campaignsController.delete);

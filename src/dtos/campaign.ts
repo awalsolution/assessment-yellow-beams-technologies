@@ -16,6 +16,10 @@ export class CreateCampaignDto {
   @IsString()
   @IsNotEmpty()
   public target_audience: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public ai_suggestions: string;
 }
 
 export class UpdateUserDto {
