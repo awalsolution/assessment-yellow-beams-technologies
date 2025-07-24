@@ -5,7 +5,7 @@ import { Routes } from '@/src/interfaces/routes';
 import { ValidationMiddleware } from '@/src/middleware/validation';
 import { AuthMiddleware } from '@/src/middleware/auth';
 
-export class UserRoute implements Routes {
+export class CampaignRoute implements Routes {
   public path = '/campaigns';
   public router = Router();
   public campaignsController = new CampaignsController();

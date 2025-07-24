@@ -30,7 +30,7 @@ export class CampaignService {
       if (find && find._id != id) throw new HttpException(409, `This Campaign ${data.name} already exists`);
     }
 
-    const updateById: Campaign = await CampaignModel.findByIdAndUpdate(id, { data });
+    const updateById: Campaign = await CampaignModel.findByIdAndUpdate(id, { ...data }, { new: true });
     if (!updateById) throw new HttpException(409, "Campaign doesn't exist");
 
     return updateById;
