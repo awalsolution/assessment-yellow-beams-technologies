@@ -4,6 +4,7 @@ import { JWT_SECRET_KEY } from '@/src/config/env';
 import { HttpException } from '@/src/exceptions/HttpException';
 import { DataStoredInToken, RequestWithUser } from '@/src/interfaces/auth';
 import { UserModel } from '@/src/models/user';
+import { logger } from '@/src/utils/logger';
 
 export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
@@ -34,6 +35,7 @@ export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: 
     next();
   } catch (error) {
     console.error('Authentication error:', error);
+    logger.error('Authentication error:', error);
 
     if (error instanceof TokenExpiredError) {
       return res.status(401).json({
