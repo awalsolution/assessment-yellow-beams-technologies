@@ -1,0 +1,83 @@
+tags:
+  - name: auth
+    description: auth API
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: User login
+      parameters:
+        - name: body
+          in: body
+          description: user credentials
+          required: true
+          schema:
+            $ref: '#/definitions/login'
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        500:
+          description: Server Error
+
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: Register user
+      parameters:
+        - name: body
+          in: body
+          description: user data
+          required: true
+          schema:
+            $ref: '#/definitions/register'
+      responses:
+        201:
+          description: Created
+        400:
+          description: Bad Request
+        409:
+          description: Conflict
+        500:
+          description: Server Error
+
+definitions:
+  register:
+    type: object
+    required:
+      - name
+      - email
+      - password
+    properties:
+      name:
+        type: string
+        description: user name
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+
+  login:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+
+schemes:
+  - https
+  - http
